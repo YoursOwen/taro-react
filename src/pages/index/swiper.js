@@ -1,5 +1,5 @@
 import React from 'react'
-import { Swiper, SwiperItem, Navigator, Image, View } from '@tarojs/components'
+import { Swiper, SwiperItem, Navigator, Image } from '@tarojs/components'
 
 function SwiperComponent(props) {
   const { data } = props

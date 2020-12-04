@@ -10,6 +10,7 @@ module.exports = {
     'taro/render-props': 'off',
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'warn',
-    'react/jsx-filename-extension': [1, { extensions: ['.js'] }]
+    'react/jsx-filename-extension': [1, { extensions: ['.js'] }],
+    'jsx-quotes': ['error', 'prefer-double']
   }
 }
