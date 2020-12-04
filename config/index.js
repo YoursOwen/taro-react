@@ -1,4 +1,4 @@
-const path  = require('path');
+const path = require('path')
 
 const config = {
   projectName: 'bfcsh-reserve-wx',
@@ -12,22 +12,17 @@ const config = {
   sourceRoot: 'src',
   outputRoot: 'dist',
   plugins: [],
-  defineConstants: {
-  },
+  defineConstants: {},
   copy: {
-    patterns: [
-    ],
-    options: {
-    }
+    patterns: [],
+    options: {}
   },
   framework: 'react',
   mini: {
     postcss: {
       pxtransform: {
         enable: true,
-        config: {
-
-        }
+        config: {}
       },
       url: {
         enable: true,
@@ -50,8 +45,7 @@ const config = {
     postcss: {
       autoprefixer: {
         enable: true,
-        config: {
-        }
+        config: {}
       },
       cssModules: {
         enable: false, // 默认为 false，如需使用 css modules 功能，则设为 true
@@ -69,8 +63,9 @@ const config = {
     '@/services': path.resolve(__dirname, '..', 'src/services'),
     '@/config': path.resolve(__dirname, '..', 'src/config')
   },
-  webpackChain (chain) {
-    chain.plugin('analyzer')
+  webpackChain(chain) {
+    chain
+      .plugin('analyzer')
       .use(require('webpack-bundle-analyzer').BundleAnalyzerPlugin, [])
   }
 }
