@@ -1,6 +1,7 @@
 import { createStore, applyMiddleware, compose } from 'redux'
 import thunkMiddleware from 'redux-thunk'
-import rootReducer from './reducers'
+import { callAPIMiddleware } from '@/src/config/middleware'
+import rootReducer from './reducer'
 
 const composeEnhancers =
   typeof window === 'object' && window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__
@@ -9,7 +10,7 @@ const composeEnhancers =
       })
     : compose
 
-const middlewares = [thunkMiddleware]
+const middlewares = [callAPIMiddleware, thunkMiddleware]
 
 if (
   process.env.NODE_ENV === 'development' &&

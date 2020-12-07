@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
 import { Provider } from 'react-redux'
-import configStore from '@/src/store'
+import configStore from '@/src/store/index'
 import './app.less'
 
 const store = configStore()

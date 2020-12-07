@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
+import { useDispatch } from 'react-redux'
 import { View } from '@tarojs/components'
-import webApi from '@/services/http'
+import { getHome } from '@/src/store/action'
 import { useAsyncEffect } from '@/src/hooks/useAsyncEffect'
 import Swiper from './swiper'
 
@@ -8,9 +9,11 @@ import './index.less'
 
 function Index() {
   const [swiper, setSwiper] = useState([])
+  const dispatch = useDispatch()
+
   useAsyncEffect(async () => {
-    const res = await webApi.getHome()
-    setSwiper(res.data.homeAdInfos)
+    const { response } = await dispatch(getHome())
+    setSwiper(response.data.homeAdInfos)
   }, [])
 
   return (
