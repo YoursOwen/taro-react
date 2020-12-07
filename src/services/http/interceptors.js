@@ -1,5 +1,5 @@
 import Taro from '@tarojs/taro'
-import { pageToLogin } from './utils'
+import { pageToLogin } from '@/utils/http'
 import { HTTP_STATUS } from './config'
 
 const requestInterceptors = function (chain) {
@@ -11,10 +11,15 @@ const requestInterceptors = function (chain) {
   return chain.proceed(requestParams)
 }
 
-const customInterceptor = (chain) => {
+const responseInterceptor = (chain) => {
   const requestParams = chain.requestParams
 
   return chain.proceed(requestParams).then((res) => {
+    console.log(
+      '🚀 ~ file: interceptors.js ~ line 18 ~ returnchain.proceed ~ res',
+      res
+    )
+
     // 只要请求成功，不管返回什么状态码，都走这个回调
     if (res.statusCode === HTTP_STATUS.NOT_FOUND) {
       return Promise.reject('请求资源不存在')
@@ -30,7 +35,12 @@ const customInterceptor = (chain) => {
       pageToLogin()
       return Promise.reject('需要鉴权')
     } else if (res.statusCode === HTTP_STATUS.SUCCESS) {
-      return res.data
+      const { errno = 0, errmsg = '' } = res.data
+      if (errno === 0) {
+        return res.data
+      } else {
+        return Promise.reject(errmsg)
+      }
     }
   })
 }
@@ -40,7 +50,7 @@ const customInterceptor = (chain) => {
 // timeoutInterceptor - 在请求超时时抛出错误。
 const interceptors = [
   requestInterceptors,
-  customInterceptor,
+  responseInterceptor,
   Taro.interceptors.logInterceptor
 ]
 
