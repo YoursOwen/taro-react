@@ -1,12 +1,17 @@
+import { values } from 'lodash'
 import { makeActionCreator } from '@/utils/redux'
 import http from '@/services/http'
 
-export const ACTION_GET_HOME = 'GET_HOME'
+const ACTION_GET_HOME = makeActionCreator('GET_HOME')
 
 export const getHome = function (payload) {
-  return makeActionCreator({
-    type: ACTION_GET_HOME,
+  return {
+    types: values(ACTION_GET_HOME),
     callAPI: http.getHome,
     payload
-  })
+  }
+}
+
+export default {
+  ACTION_GET_HOME
 }

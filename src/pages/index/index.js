@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { useDispatch } from 'react-redux'
+import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import { View } from '@tarojs/components'
 import { getHome } from '@/src/store/action'
 import { useAsyncEffect } from '@/src/hooks/useAsyncEffect'
@@ -8,19 +8,30 @@ import Swiper from './swiper'
 import './index.less'
 
 function Index() {
-  const [swiper, setSwiper] = useState([])
   const dispatch = useDispatch()
+  const { query, homeAdInfos } = useSelector((state) => {
+    const homeInfo = state.homeInfo
+    return {
+      query: homeInfo.query,
+      homeAdInfos: homeInfo.data
+        ? homeInfo.data.homeAdInfos
+        : [{ url: 'xxx', id: 0 }]
+    }
+  })
 
   useAsyncEffect(async () => {
-    const { response } = await dispatch(getHome())
-    setSwiper(response.data.homeAdInfos)
+    dispatch(getHome())
   }, [])
+
+  if (query) {
+    return <View>Loading</View>
+  }
 
   return (
     <View className="home page-tabbar">
       <View class="home-header">Header</View>
       <View class="home-swiper">
-        <Swiper data={swiper} />
+        <Swiper data={homeAdInfos} />
       </View>
     </View>
   )

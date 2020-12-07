@@ -16,20 +16,11 @@ export function createReducer(initialState, handlers) {
 /**
  * @name makeActionCreator
  * @param type String
- * @param payload Object｜ Array ｜ String ｜ Number ｜ Boolean
- * @param shouldCallAPI function 检查是否有缓存
- * @param callAPI function 异步api回调
  */
-export function makeActionCreator({
-  type,
-  payload,
-  callAPI = () => {},
-  shouldCallAPI
-}) {
+export function makeActionCreator(type) {
   return {
-    types: [`${type}_REQUEST`, `${type}_SUCCESS`, `${type}_FAILURE`],
-    shouldCallAPI,
-    callAPI,
-    payload
+    REQUEST: `${type}_REQUEST`,
+    SUCCESS: `${type}_SUCCESS`,
+    FAILURE: `${type}_FAILURE`
   }
 }
