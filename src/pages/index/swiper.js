@@ -3,7 +3,7 @@ import { Swiper, SwiperItem, Navigator, Image } from '@tarojs/components'
 
 const SwiperComponent = React.memo((props) => {
   const { data } = props
-  console.log(data)
+
   return (
     <Swiper
       className="test-h"

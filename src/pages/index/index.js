@@ -9,13 +9,11 @@ import './index.less'
 
 function Index() {
   const dispatch = useDispatch()
-  const { query, homeAdInfos } = useSelector((state) => {
+  const { homeAdInfos } = useSelector((state) => {
     const homeInfo = state.homeInfo
     return {
       query: homeInfo.query,
-      homeAdInfos: homeInfo.data
-        ? homeInfo.data.homeAdInfos
-        : [{ url: 'xxx', id: 0 }]
+      homeAdInfos: homeInfo.data ? homeInfo.data.homeAdInfos : []
     }
   })
 
@@ -23,9 +21,9 @@ function Index() {
     dispatch(getHome())
   }, [])
 
-  if (query) {
-    return <View>Loading</View>
-  }
+  // if (query) {
+  //   return <View>Loading</View>
+  // }
 
   return (
     <View className="home page-tabbar">
