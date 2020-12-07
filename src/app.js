@@ -1,22 +1,9 @@
 import React, { Component } from 'react'
 import { Provider } from 'react-redux'
-import { createStore, combineReducers } from 'redux'
+import configStore from '@/src/store'
 import './app.less'
 
-const reducers = combineReducers({
-  thread: (state = {}, action) => {
-    if (action.type === 'SET_CURRENT_THREAD') {
-      return {
-        ...state,
-        ...action.thread
-      }
-    }
-    return state
-  }
-})
-
-const store = createStore(reducers)
-
+const store = configStore()
 class App extends Component {
   componentDidMount() {}
 

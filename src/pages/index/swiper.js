@@ -1,9 +1,9 @@
 import React from 'react'
 import { Swiper, SwiperItem, Navigator, Image } from '@tarojs/components'
 
-function SwiperComponent(props) {
+const SwiperComponent = React.memo((props) => {
   const { data } = props
-  console.log(props)
+
   return (
     <Swiper
       className="test-h"
@@ -30,6 +30,6 @@ function SwiperComponent(props) {
       })}
     </Swiper>
   )
-}
+})
 
 export default SwiperComponent

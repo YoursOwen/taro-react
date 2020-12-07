@@ -1,3 +1,3 @@
 export default {
-  navigationBarTitleText: "BFC iShopping"
+  navigationBarTitleText: 'BFC iShopping'
 }

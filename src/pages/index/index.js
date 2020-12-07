@@ -8,7 +8,6 @@ import './index.less'
 
 function Index() {
   const [swiper, setSwiper] = useState([])
-  console.log(webApi.getHome)
   useAsyncEffect(async () => {
     const res = await webApi.getHome()
     setSwiper(res.data.homeAdInfos)
