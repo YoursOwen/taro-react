@@ -17,6 +17,7 @@
 //   return BASE_URL
 //   }
 // }
+console.log('process.env.NODE_ENV', process.env.NODE_ENV)
 const baseUrl = 'https://ishopping02.bfcsh.com:8443'
 
 export default baseUrl

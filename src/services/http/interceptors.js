@@ -1,48 +1,49 @@
 import Taro from '@tarojs/taro'
-import { pageToLogin } from '@/utils/http'
-import { HTTP_STATUS } from './config'
+// import { pageToLogin } from '@/utils/http'
+import Storage from '@/utils/storage'
+import { STATUS_TEXT } from './config'
 
-const requestInterceptors = function (chain) {
+const requestInterceptors = (chain) => {
   let requestParams = chain.requestParams
-  requestParams.headers = { ...requestParams.requestParams }
+  requestParams.header = { ...requestParams.requestParams }
   let Token =
-    requestParams.headers['X-BfcMall-Token'] || Taro.getStorageSync('token')
-  requestParams.headers['X-BfcMall-Token'] = Token
+    requestParams.header['X-BfcMall-Token'] || Storage.getStorage('token')
+  requestParams.header['X-BfcMall-Token'] = Token
   return chain.proceed(requestParams)
 }
 
-const responseInterceptor = (chain) => {
+const customerInterceptor = async (chain) => {
   const requestParams = chain.requestParams
 
-  return chain.proceed(requestParams).then((res) => {
+  try {
+    const response = await chain.proceed(requestParams)
     console.log(
-      '🚀 ~ file: interceptors.js ~ line 18 ~ returnchain.proceed ~ res',
-      res
+      '🚀 ~ file: interceptors.js ~ line 22 ~ customerInterceptor ~ response',
+      response
     )
 
-    // 只要请求成功，不管返回什么状态码，都走这个回调
-    if (res.statusCode === HTTP_STATUS.NOT_FOUND) {
-      return Promise.reject('请求资源不存在')
-    } else if (res.statusCode === HTTP_STATUS.BAD_GATEWAY) {
-      return Promise.reject('服务端出现了问题')
-    } else if (res.statusCode === HTTP_STATUS.FORBIDDEN) {
-      Taro.setStorageSync('X-BfcMall-Token', '')
-      pageToLogin()
-      // TODO 根据自身业务修改
-      return Promise.reject('没有权限访问')
-    } else if (res.statusCode === HTTP_STATUS.AUTHENTICATE) {
-      Taro.setStorageSync('X-BfcMall-Token', '')
-      pageToLogin()
-      return Promise.reject('需要鉴权')
-    } else if (res.statusCode === HTTP_STATUS.SUCCESS) {
-      const { errno = 0, errmsg = '' } = res.data
-      if (errno === 0) {
-        return res.data
-      } else {
-        return Promise.reject(errmsg)
-      }
+    const {
+      data,
+      data: { errno = -1, errmsg = '请求异常' }
+    } = response
+
+    if (errno === 0) {
+      return data
+    } else {
+      return Promise.reject({ ...data, errno, errmsg })
     }
-  })
+  } catch (error) {
+    console.log(
+      '🚀 ~ file: interceptors.js ~ line 45 ~ customerInterceptor ~ error',
+      error
+    )
+    const { status = 500 } = error
+    return Promise.reject({
+      errno: status,
+      errmsg: STATUS_TEXT.status,
+      data: {}
+    })
+  }
 }
 
 // Taro 提供了两个内置拦截器
@@ -50,8 +51,9 @@ const responseInterceptor = (chain) => {
 // timeoutInterceptor - 在请求超时时抛出错误。
 const interceptors = [
   requestInterceptors,
-  responseInterceptor,
-  Taro.interceptors.logInterceptor
+  customerInterceptor,
+  Taro.interceptors.logInterceptor,
+  Taro.interceptors.timeoutInterceptor
 ]
 
 export default interceptors

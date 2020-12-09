@@ -11,3 +11,13 @@ export const HTTP_STATUS = {
   SERVICE_UNAVAILABLE: 503,
   GATEWAY_TIMEOUT: 504
 }
+
+export const STATUS_TEXT = {
+  200: '请求成功',
+  400: '请求异常',
+  404: '请求失效',
+  500: '服务器异常',
+  502: '服务器异常',
+  503: '服务不可用',
+  504: '网关超时'
+}
