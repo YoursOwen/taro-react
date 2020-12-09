@@ -7,7 +7,7 @@ const ACTION_GET_HOME = makeActionCreator('GET_HOME')
 export const getHome = function (payload) {
   return {
     types: values(ACTION_GET_HOME),
-    callAPI: webApi.getCartList,
+    callAPI: webApi.getHome,
     payload
   }
 }

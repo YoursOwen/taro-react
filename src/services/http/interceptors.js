@@ -1,11 +1,9 @@
 import Taro from '@tarojs/taro'
-// import { pageToLogin } from '@/utils/http'
 import Storage from '@/utils/storage'
 import { STATUS_TEXT } from './config'
 
 const requestInterceptors = (chain) => {
   let requestParams = chain.requestParams
-  requestParams.header = { ...requestParams.requestParams }
   let Token =
     requestParams.header['X-BfcMall-Token'] || Storage.getStorage('token')
   requestParams.header['X-BfcMall-Token'] = Token
@@ -28,9 +26,10 @@ const customerInterceptor = async (chain) => {
     } = response
 
     if (errno === 0) {
-      return data
+      return response
     } else {
-      return Promise.reject({ ...data, errno, errmsg })
+      response['data'] = { ...data, errno, errmsg }
+      return Promise.reject(response)
     }
   } catch (error) {
     console.log(
@@ -38,11 +37,12 @@ const customerInterceptor = async (chain) => {
       error
     )
     const { status = 500 } = error
-    return Promise.reject({
+    error['data'] = {
       errno: status,
       errmsg: STATUS_TEXT.status,
       data: {}
-    })
+    }
+    return Promise.reject(error)
   }
 }
 
