@@ -15,11 +15,6 @@ const customerInterceptor = async (chain) => {
 
   try {
     const response = await chain.proceed(requestParams)
-    console.log(
-      '🚀 ~ file: interceptors.js ~ line 22 ~ customerInterceptor ~ response',
-      response
-    )
-
     const {
       data,
       data: { errno = -1, errmsg = '请求异常' }
@@ -29,19 +24,17 @@ const customerInterceptor = async (chain) => {
       return response
     } else {
       response['data'] = { ...data, errno, errmsg }
+
       return Promise.reject(response)
     }
   } catch (error) {
-    console.log(
-      '🚀 ~ file: interceptors.js ~ line 45 ~ customerInterceptor ~ error',
-      error
-    )
     const { status = 500 } = error
     error['data'] = {
       errno: status,
       errmsg: STATUS_TEXT.status,
       data: {}
     }
+
     return Promise.reject(error)
   }
 }
